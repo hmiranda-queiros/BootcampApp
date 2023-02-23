@@ -3,6 +3,9 @@ container:
   cpu: 4
   memory: 16G
   kvm: true
+  
+env:
+  CC_TEST_REPORTER_ID: ENCRYPTED[b8a163e79e09b409e43d1c24c01febdfee9edacdb32cfa5636efd09dd9dffa7b4d29a0fc30ebbeb117a60e1520368939]
 
 check_android_task:
   name: Run Android tests
@@ -30,6 +33,10 @@ check_android_task:
     adb shell settings put global window_animation_scale 0.0
     adb shell settings put global transition_animation_scale 0.0
     adb shell settings put global animator_duration_scale 0.0
+  prepare_codeclimate_script: |
+    curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    chmod +x ./cc-test-reporter
+    ./cc-test-reporter before-build  
   screen_record_background_script:
     for n in $(seq 1 20); do adb exec-out screenrecord --time-limit=180 --output-format=h264 - > $n.h264; done
   check_script:
